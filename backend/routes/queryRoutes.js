@@ -3,6 +3,6 @@ import { processQuery } from '../controllers/queryController.js';
 
 const router = express.Router();
 
-router.post('/query', processQuery);
+router.post('/ask', processQuery);
 
 export default router;

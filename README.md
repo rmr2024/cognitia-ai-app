@@ -176,7 +176,7 @@ Model used: `llama-3.1-8b-instant`
 
 ## API Documentation
 
-### POST /api/query
+### POST /api/ask
 
 Submit a question and receive an AI response.
 
@@ -192,7 +192,7 @@ Submit a question and receive an AI response.
 
 ```json
 {
-  "answer": "The capital of France is Paris."
+  "response": "The capital of France is Paris."
 }
 ```
 

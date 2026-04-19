@@ -6,7 +6,7 @@ const querySchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  answer: {
+  response: {
     type: String,
     required: true
   }

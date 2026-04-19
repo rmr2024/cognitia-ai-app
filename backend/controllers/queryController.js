@@ -49,10 +49,10 @@ export const processQuery = async (req, res) => {
 
     const savedQuery = await Query.create({
       question: trimmedQuestion,
-      answer: answer
+      response: answer
     });
 
-    res.status(200).json({ answer });
+    res.status(200).json({ response: answer });
   } catch (error) {
     console.error('Controller Error:', error);
     res.status(500).json({ error: 'Internal server error' });

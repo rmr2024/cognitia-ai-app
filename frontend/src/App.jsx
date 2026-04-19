@@ -22,7 +22,7 @@ function App() {
     setAnswer('');
 
     try {
-      const response = await fetch(`${API_URL}/query`, {
+      const response = await fetch(`${API_URL}/ask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ function App() {
         throw new Error(data.error || 'Failed to get response');
       }
 
-      setAnswer(data.answer);
+      setAnswer(data.response);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {

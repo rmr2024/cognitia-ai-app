@@ -14,11 +14,17 @@ The user provided a comprehensive specification for building a full-stack conver
 1. **Architecture**: Monorepo with /frontend (React + Vite) and /backend (Node.js + Express)
 2. **Core Functionality**: Single question → Groq API (llama-3.1-8b-instant) → Single response
 3. **Storage**: MongoDB Atlas for storing question/response pairs
-4. **API**: POST /api/query endpoint
+4. **API**: POST /api/ask endpoint
 5. **Security**: Environment variables (.env) for API keys and database URI
 6. **UI**: Simple input box, submit button, response display
 7. **Deployment**: Vercel for both frontend and backend
 8. **Documentation**: README.md and vibecoded.md
+
+## Changes Made
+
+- Renamed endpoint from `/api/query` to `/api/ask`
+- Renamed response field from `answer` to `response` for consistency
+- Added CORS origin configuration
 
 ## Configuration Details
 
@@ -27,7 +33,7 @@ The user provided a comprehensive specification for building a full-stack conver
 - `server.js` - Main entry point with Express setup
 - `routes/queryRoutes.js` - API route definitions
 - `controllers/queryController.js` - Business logic for Groq API and MongoDB
-- `models/Query.js` - Mongoose schema for question/answer storage
+- `models/Query.js` - Mongoose schema for question/response storage
 - `config/db.js` - MongoDB connection
 - `vercel.json` - Vercel serverless deployment config
 
