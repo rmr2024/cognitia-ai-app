@@ -1,5 +1,7 @@
+
+
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: './.env' });
 
 import express from 'express';
 import cors from 'cors';
@@ -34,18 +36,16 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-const startServer = async () => {
-  if (process.env.MONGO_URI) {
-    await connectDB();
-  } else {
-    console.warn('MONGO_URI not provided - running without database');
-  }
+// Connect to MongoDB
+if (process.env.MONGO_URI) {
+  connectDB();
+}
 
+// For local development
+if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-};
-
-startServer();
+}
 
 export default app;
