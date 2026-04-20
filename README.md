@@ -2,72 +2,82 @@
 
 A production-ready full-stack conversational AI web application powered by Groq's LLaMA model and MongoDB Atlas.
 
-## Overview
+## 🚀 Live Demo
+
+- **Frontend**: [Deploy to Vercel](https://vercel.com)
+- **Backend**: [Deploy to Render](https://render.com)
+
+## 📋 Overview
 
 Cognitia AI is a simple, single-turn question-answer application. Users enter a question, receive an instant response from the AI, and the conversation is stored in MongoDB Atlas.
 
-### Key Features
+### ✨ Key Features
 
 - Single question, single response (no multi-turn conversation)
 - Real-time AI response using Groq API (LLaMA 3.1 8B Instant)
 - Persistent storage in MongoDB Atlas
 - Clean, modern UI with loading states
-- Production-ready deployment on Vercel
+- Production-ready deployment on Render + Vercel
+- Rate limiting and CORS protection
+- Error handling and validation
 
-## Tech Stack
+## 🛠 Tech Stack
 
 ### Backend
-
 - **Runtime**: Node.js 18+
 - **Framework**: Express.js
 - **Database**: MongoDB Atlas (Mongoose ODM)
-- **AI**: Groq API (llama-3.1-8b-instant)
+- **AI**: Groq SDK (llama-3.1-8b-instant)
+- **Security**: CORS, Rate Limiting, Input Validation
 
 ### Frontend
-
 - **Framework**: React 18
 - **Build Tool**: Vite
 - **Styling**: CSS (custom)
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```
 cognitia-ai-app/
 ├── backend/
 │   ├── config/
-│   │   └── db.js           # MongoDB connection
+│   │   └── db.js              # MongoDB connection
 │   ├── controllers/
 │   │   └── queryController.js # Query processing logic
 │   ├── models/
-│   │   └── Query.js       # Mongoose schema
+│   │   └── Query.js           # Mongoose schema
 │   ├── routes/
-│   │   └── queryRoutes.js # API routes
-│   ├── server.js          # Express app entry
-│   ├── vercel.json       # Vercel config
-│   ├── Dockerfile        # Docker image
+│   │   └── queryRoutes.js     # API routes
+│   ├── server.js              # Express app entry
+│   ├── .env.example           # Environment template
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx       # Main component
-│   │   ├── main.jsx      # React entry
-│   │   └── index.css     # Styles
-│   ├── Dockerfile
+│   │   ├── App.jsx            # Main component
+│   │   ├── main.jsx           # React entry
+│   │   └── index.css          # Styles
+│   ├── .env.example           # Environment template
 │   ├── vite.config.js
+│   ├── vercel.json            # Vercel config
 │   └── package.json
-├── docker-compose.yml
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # GitHub Actions CI/CD
+├── render.yaml                # Render deployment config
+├── DEPLOYMENT.md              # Detailed deployment guide
 └── README.md
 ```
 
-## Prerequisites
+## 🚀 Quick Start
+
+### Prerequisites
 
 - Node.js 18+
 - npm or yarn
 - MongoDB Atlas account
 - Groq API key
 
-## Setup Steps
-
-### 1. Clone the Repository
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/cognitia-ai-app.git
@@ -83,10 +93,12 @@ cp .env.example .env
 
 Edit `.env` with your credentials:
 
-```
-GROQ_API_KEY=your_groq_api_key_here
-MONGO_URI=your_mongodb_atlas_connection_string_here
+```env
 PORT=5000
+NODE_ENV=development
+GROQ_API_KEY=your_groq_api_key_here
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/cognitia
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
 Install dependencies and start:
@@ -105,14 +117,8 @@ cp .env.example .env
 
 Edit `.env`:
 
-```
+```env
 VITE_API_URL=http://localhost:5000/api
-```
-
-For production, replace with your deployed backend URL:
-
-```
-VITE_API_URL=https://your-backend.vercel.app/api
 ```
 
 Install dependencies and start:
@@ -122,66 +128,35 @@ npm install
 npm run dev
 ```
 
-### 4. Development
+### 4. Access Application
 
-Open two terminals:
+Open http://localhost:5173 in your browser.
 
-**Terminal 1 (Backend):**
-```bash
-cd backend
-npm run dev
-```
+## 🌐 Production Deployment
 
-**Terminal 2 (Frontend):**
-```bash
-cd frontend
-npm run dev
-```
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed step-by-step deployment instructions.
 
-Access the app at http://localhost:5173
+### Quick Deploy
 
-## Environment Variables
+#### Backend → Render
+1. Push code to GitHub
+2. Connect repository to Render
+3. Set environment variables
+4. Deploy
 
-### Backend (.env)
+#### Frontend → Vercel
+1. Push code to GitHub
+2. Import project to Vercel
+3. Set `VITE_API_URL` environment variable
+4. Deploy
 
-| Variable | Description |
-|----------|-------------|
-| `GROQ_API_KEY` | Your Groq API key from [console.groq.com](https://console.groq.com) |
-| `MONGO_URI` | MongoDB Atlas connection string |
-| `PORT` | Server port (default: 5000) |
-
-### Frontend (.env)
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_API_URL` | Backend API URL (local or deployed) |
-
-## MongoDB Atlas Setup
-
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Create a free cluster
-3. Create database user (username/password)
-4. Add IP address to whitelist (0.0.0.0 for development)
-5. Get connection string from "Connect" > "Drivers"
-6. Replace `<password>` with your database user password
-
-## Groq API Usage
-
-1. Create account at [console.groq.com](https://console.groq.com)
-2. Navigate to API Keys
-3. Create new API key
-4. Copy key to `GROQ_API_KEY` in backend `.env`
-
-Model used: `llama-3.1-8b-instant`
-
-## API Documentation
+## 📡 API Documentation
 
 ### POST /api/ask
 
 Submit a question and receive an AI response.
 
 **Request:**
-
 ```json
 {
   "question": "What is the capital of France?"
@@ -189,7 +164,6 @@ Submit a question and receive an AI response.
 ```
 
 **Response:**
-
 ```json
 {
   "response": "The capital of France is Paris."
@@ -197,7 +171,6 @@ Submit a question and receive an AI response.
 ```
 
 **Error Response:**
-
 ```json
 {
   "error": "Question is required and must be a non-empty string"
@@ -209,67 +182,131 @@ Submit a question and receive an AI response.
 Health check endpoint.
 
 **Response:**
-
 ```json
 {
   "status": "ok"
 }
 ```
 
-## Deployment (Vercel)
+## 🔐 Environment Variables
 
-### Backend Deployment
+### Backend
 
-1. Push code to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import repository
-4. Configure:
-   - Framework: Other
-   - Root Directory: backend
-5. Add Environment Variables:
-   - `GROQ_API_KEY`
-   - `MONGO_URI`
-6. Deploy
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `PORT` | Server port | No (default: 5000) |
+| `NODE_ENV` | Environment | No (default: development) |
+| `GROQ_API_KEY` | Groq API key | Yes |
+| `MONGO_URI` | MongoDB connection string | Yes |
+| `ALLOWED_ORIGINS` | CORS allowed origins | Yes |
 
-### Frontend Deployment
+### Frontend
 
-1. Go to [Vercel](https://vercel.com)
-2. Import repository
-3. Configure:
-   - Framework: Vite
-   - Root Directory: frontend
-4. Add Environment Variables:
-   - `VITE_API_URL=https://your-backend.vercel.app/api`
-5. Deploy
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `VITE_API_URL` | Backend API URL | Yes |
 
-## Docker Deployment
+## 🧪 Testing
 
-### Using docker-compose
-
+### Backend Health Check
 ```bash
-docker-compose up --build
+curl http://localhost:5000/api/health
 ```
 
-### Manual Build
+### Test AI Endpoint
+```bash
+curl -X POST http://localhost:5000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question":"What is AI?"}'
+```
 
-**Backend:**
+## 🔧 Development
+
+### Backend Development
 ```bash
 cd backend
-docker build -t cognitia-backend .
-docker run -p 5000:5000 -e GROQ_API_KEY=xxx -e MONGO_URI=xxx cognitia-backend
+npm run dev  # Auto-restart on file changes
 ```
 
-**Frontend:**
+### Frontend Development
 ```bash
 cd frontend
-docker build -t cognitia-frontend .
-docker run -p 5173:5173 -e VITE_API_URL=http://localhost:5000/api cognitia-frontend
+npm run dev  # Hot module replacement
 ```
 
-## License
+## 📦 Build
 
-MIT
+### Frontend Production Build
+```bash
+cd frontend
+npm run build
+npm run preview  # Preview production build
+```
 
-## Author
+## 🛡 Security Features
+
+- **Rate Limiting**: 100 requests per 15 minutes per IP
+- **CORS Protection**: Configurable allowed origins
+- **Input Validation**: Question length and type validation
+- **Error Handling**: Comprehensive error handling middleware
+- **Environment Variables**: Sensitive data in environment variables
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**MongoDB Connection Error**
+- Verify `MONGO_URI` is correct
+- Check IP whitelist in MongoDB Atlas
+- Confirm database user credentials
+
+**Groq API Error**
+- Verify `GROQ_API_KEY` is valid
+- Check API rate limits
+- Ensure no extra spaces in environment variable
+
+**CORS Error**
+- Add frontend URL to `ALLOWED_ORIGINS`
+- Ensure no trailing slash in URLs
+- Restart backend after changes
+
+## 📈 Performance
+
+- **Backend**: Express.js with async/await
+- **Frontend**: React with Vite for fast builds
+- **Database**: MongoDB Atlas with connection pooling
+- **AI**: Groq's ultra-fast LLaMA inference
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 👤 Author
 
 R Meenakshi Reddy
+
+## 🙏 Acknowledgments
+
+- [Groq](https://groq.com) for ultra-fast AI inference
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for database hosting
+- [Render](https://render.com) for backend hosting
+- [Vercel](https://vercel.com) for frontend hosting
+
+## 📞 Support
+
+For issues and questions:
+- Open an issue on GitHub
+- Check [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment help
+- Review API documentation above
+
+---
+
+**Made with ❤️ using Groq, MongoDB, React, and Express**

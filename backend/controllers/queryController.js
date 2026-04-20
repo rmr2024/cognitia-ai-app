@@ -1,4 +1,7 @@
+import Groq from 'groq-sdk';
 import Query from '../models/Query.js';
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export const processQuery = async (req, res) => {
   try {
@@ -14,40 +17,21 @@ export const processQuery = async (req, res) => {
 
     const trimmedQuestion = question.trim();
 
-    const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        messages: [
-          {
-            role: 'user',
-            content: trimmedQuestion
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 1024,
-        top_p: 0.9
-      })
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [{ role: 'user', content: trimmedQuestion }],
+      model: 'llama-3.1-8b-instant',
+      temperature: 0.7,
+      max_tokens: 1024,
+      top_p: 0.9
     });
 
-    if (!groqResponse.ok) {
-      const errorData = await groqResponse.json();
-      console.error('Groq API Error:', errorData);
-      return res.status(502).json({ error: 'Failed to get response from AI service' });
-    }
-
-    const groqData = await groqResponse.json();
-    const answer = groqData.choices?.[0]?.message?.content;
+    const answer = chatCompletion.choices[0]?.message?.content;
 
     if (!answer) {
       return res.status(502).json({ error: 'Invalid response from AI service' });
     }
 
-    const savedQuery = await Query.create({
+    await Query.create({
       question: trimmedQuestion,
       response: answer
     });
